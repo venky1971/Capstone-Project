@@ -41,8 +41,13 @@ View(ZHVI_IRSI)
 
 # Remove rows if the income data is NA or blank for zip codes.
 # drop_na - tidyr function. 
+<<<<<<< HEAD
 # ZHVI_IRSI %>% drop_na()   -- Not working. Not sure why!!!
 # View (ZHVI_IRSI)
+=======
+# mydata %>% drop_na()   -- Not working. Not sure why!!!
+# View (mydata)
+>>>>>>> a89ac80cd98474f8319e6b74b30d759ab562c56e
 # Dataset contains 14629 rows after removing NA
 
 ZHVI_IRSI<-na.omit(ZHVI_IRSI)
@@ -59,6 +64,9 @@ View (ZHVI_IRSI)
 # Retain zip codes only in the range "00501 and 99950"
 ZHVI_IRSI <- filter(ZHVI_IRSI,(ZHVI_IRSI$`Zip Code` >= 00501 & ZHVI_IRSI$`Zip Code` <=99950))
 View(ZHVI_IRSI)
+<<<<<<< HEAD
 
 write.csv(ZHVI_IRSI, 'ZHVI_IRSI.csv', row.names = FALSE)
 View(ZHVI_IRSI)
+=======
+>>>>>>> a89ac80cd98474f8319e6b74b30d759ab562c56e
