@@ -43,7 +43,7 @@ View(ZHVI_IRSI)
 # drop_na - tidyr function. 
 # ZHVI_IRSI %>% drop_na()   -- Not working. Not sure why!!!
 # View (ZHVI_IRSI)
-# Dataset contains 14629 rows after removing NA
+# Dataset contains 14629 rows after removing NA.
 
 ZHVI_IRSI<-na.omit(ZHVI_IRSI)
 View (ZHVI_IRSI)
