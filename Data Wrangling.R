@@ -15,7 +15,7 @@ IRSI <- read_csv("IRS Income By Zip Code.csv") %>%
 ZHVI <- ZHVI %>% 
         select(RegionName, City, State, Zhvi) %>%
         rename(Zipcode =  RegionName, Zillow_Home_Value_Index = Zhvi ) %>%
-        glimpse()
+        glimpse() 
 
 # select only Zipcode and AGI columns  
 IRSI <- IRSI %>% 
