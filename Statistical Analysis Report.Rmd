@@ -1,0 +1,135 @@
+---
+title: "Capstone Statistical Analysis Report"
+author: "Venkatesh Krishnan"
+date: "June 19, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=FALSE}
+Mydata <- read.csv("ZHVI_IRSI.csv")
+
+MdataHVM <- max(Mydata$Zillow_Home_Value_Index)/1000000
+MdataAGIM <- max(Mydata$Adjusted_Gross_Income)/1000000
+
+AGI1M <- Mydata %>%
+       select(Adjusted_Gross_Income, Zillow_Home_Value_Index) %>%
+       filter(Adjusted_Gross_Income < 1000000)  
+
+AGI1M_Perc <- round((nrow(AGI1M)/nrow(Mydata)*100),2)
+ZHV1M_Min <- min(AGI1M$Zillow_Home_Value_Index)
+ZHV1M_Max <- max(AGI1M$Zillow_Home_Value_Index)
+HomeValueMax <- ZHV1M_Max/100000
+AGIMax <- max(AGI1M$Adjusted_Gross_Income)/100000
+
+AGI15M <- Mydata %>%
+       select(Adjusted_Gross_Income, Zillow_Home_Value_Index) %>%
+       filter(Adjusted_Gross_Income >= 1000000 & Adjusted_Gross_Income <= 5000000)   
+AGI15M_Perc <- round((nrow(AGI15M)/nrow(Mydata)*100),2)
+ZHV15M_Min <- min(AGI15M$Zillow_Home_Value_Index)
+ZHV15M_Max <- max(AGI15M$Zillow_Home_Value_Index)
+HomeValueMax15 <- ZHV15M_Max/1000000
+AGIMax15 <- max(AGI15M$Adjusted_Gross_Income)/1000000
+
+AGI5M <- Mydata %>%
+       select(Adjusted_Gross_Income, Zillow_Home_Value_Index) %>%
+       filter(Adjusted_Gross_Income > 5000000) 
+AGI5M_Perc <- round((nrow(AGI5M)/nrow(Mydata)*100),2)
+ZHV5M_Min <- min(AGI5M$Zillow_Home_Value_Index)
+ZHV5M_Max <- max(AGI5M$Zillow_Home_Value_Index)
+HomeValueMax5 <- ZHV5M_Max/1000000
+AGIMax5 <- max(AGI5M$Adjusted_Gross_Income)/1000000
+```
+
+## Interesting Facts:
+
+Percentage of households with AGI under $ 1M is approximately `r toString(AGI1M_Perc)`% and the corresponding home value range is $ `r toString(ZHV1M_Min)` to $ `r toString(ZHV1M_Max)`. 
+
+Percentage of households with AGI between $ 1M and $ 5M is approximately `r toString(AGI15M_Perc)`% and the corresponding home value range is $ `r toString(ZHV15M_Min)` to $ `r toString(ZHV15M_Max)`.  
+
+Percentage of households with AGI over $ 5M is approximately `r toString(AGI5M_Perc)`% and the corresponding home value range is $ `r toString(ZHV5M_Min)` to $ `r toString(ZHV5M_Max)`.    
+
+## Trends:  
+
+There was a positive corelation of Household Incomes to Home Values.  
+
+## Bar Plot:
+
+```{r Mydata, echo=FALSE, warning=FALSE}
+ggplot(Mydata, aes(x = Adjusted_Gross_Income/1000000, y = Zillow_Home_Value_Index/1000000, fill= Zillow_Home_Value_Index/1000000)) +
+  geom_bar(stat = "identity", width = 0.7) +
+  scale_x_continuous(name = "Annual Gross Income in millions", limits = c(0, MdataAGIM)) + 
+  scale_y_continuous(name = "Zillow Home Value Index in millions", limits = c(0, MdataHVM))
+```
+
+
+## Household income less than a million
+
+
+```{r AGI1M, echo=FALSE, warning=FALSE}
+
+ggplot(AGI1M, aes(x = Adjusted_Gross_Income/100000, y = Zillow_Home_Value_Index/100000, fill= Zillow_Home_Value_Index/100000)) +
+    geom_bar(stat = "identity", width = 0.7) +
+    scale_x_continuous(name = "Annual Gross Income", limits = c(0, AGIMax)) + 
+    scale_y_continuous(name = "Zillow Home Value Index", limits = c(0, HomeValueMax))
+       
+```
+
+## Household income between 1 & 5 million
+
+```{r AGI15M, echo=FALSE, warning=FALSE}
+
+ggplot(AGI15M, aes(x = Adjusted_Gross_Income/1000000, y = Zillow_Home_Value_Index/1000000, fill= Zillow_Home_Value_Index/1000000)) +
+    geom_bar(stat = "identity", width = 0.7) +
+    scale_x_continuous(name = "Annual Gross Income", limits = c(0, AGIMax15)) + 
+  scale_y_continuous(name = "Zillow Home Value Index", limits = c(0, HomeValueMax15))
+       
+```
+
+
+## Household income above 5 million
+
+```{r AGI5M, echo=FALSE, warning=FALSE}
+
+ggplot(AGI5M, aes(x = Adjusted_Gross_Income/1000000, y = Zillow_Home_Value_Index/1000000, fill= Zillow_Home_Value_Index/1000000)) +
+    geom_bar(stat = "identity", width = 0.7) +
+    scale_x_continuous(name = "Annual Gross Income", limits = c(0, AGIMax5)) + 
+  scale_y_continuous(name = "Zillow Home Value Index", limits = c(0, HomeValueMax5))
+       
+```
+
+
+## Scatter Plot:
+
+
+```{r echo=FALSE}
+ggplot(Mydata, aes(x = Adjusted_Gross_Income/1000000, y = Zillow_Home_Value_Index/1000000)) +
+    geom_point()+
+    scale_x_continuous(name = "Annual Gross Income in millions", limits = c(0, MdataAGIM)) + 
+    scale_y_continuous(name = "Zillow Home Value Index in millions", limits = c(0, MdataHVM))
+
+```
+
+## Hypothesis for further Investigation:
+
+We have only obtained a sample from approx. 14,000 zip codes of USA out of a total of approx. 42,000 zip codes in the country. So, further data is recommended to be obtained to extrapolate this analysis.
+
+## Leading Questions:
+
+1) Can we analyze the data for each state and compare it with the country's data.
+
+2) This is only the latest data from 2016. Can we also obtain historical data for the past 20 years or more to arrive at trend analysis. This will lead us to finding out the driving factors of a particular geography.
+
+3) Currently what we see from Zillow is the actual price paid for a home and it's current value. What is not available now is the projection - 1 year from today, 3 years from today etc., This can provide insight for a customer into a particular market.
+
+4) We can incorporate the crime data of a particular area / zip code that may throw some insight into home valuation.
+
+5) Investments in technology, medicine, infrastructure, realestate (Commercial, Residential and Retail) can act as direct indicators for price prediction in an area.
+
